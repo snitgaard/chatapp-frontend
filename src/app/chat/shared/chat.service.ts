@@ -18,6 +18,9 @@ export class ChatService {
   sendMessage(msg: string){
     this.socket.emit("message", msg);
   }
+  sendTyping(typing: boolean): void {
+    this.socket.emit('typing', typing);
+  }
 
   // Frontend is listening for backend events
   listenForMessages(): Observable<ChatMessage> {
@@ -29,9 +32,15 @@ export class ChatService {
     return this.socket
       .fromEvent<ChatClient[]>("clients")
   }
+
   listenForWelcome(): Observable<WelcomeDto> {
     return this.socket
       .fromEvent<WelcomeDto>("welcome")
+  }
+
+  listenForClientTyping(): Observable<ChatClient> {
+    return this.socket
+      .fromEvent<ChatClient>("clientTyping")
   }
 
   listenForError(): Observable<string> {
