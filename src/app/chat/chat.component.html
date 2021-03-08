@@ -1,34 +1,75 @@
-<div *ngIf="chatClient">
-  <h1>Hi {{chatClient.name}}</h1>
-  <label>
-    Message:
-    <input type="text" [formControl]="messageFc">
-  </label>
-  <button (click)="sendMessage()">Send Message</button>
+<div class="row vh-100" style="padding-top: 30px; padding-bottom: 20px" *ngIf="chatClient">
+  <div class="col-4">
+    <div class="card h-100">
+      <div class="card-header">
+        Clients Online:
+      </div>
+      <div class="card-body">
+        <div *ngIf="clients$ | async as clients">
+          <ul>
+            <li *ngFor="let client of clients">
+              {{client.name}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="card h-100">
+      <div class="card-header">
+        <h5>Welcome {{chatClient.name}}!</h5>
+      </div>
+      <div class="card-body">
+        <h6 *ngFor="let message of messages">
+          <div class="card">
+            <div class="card-body">
+              {{message.date | date: 'hh:mm'}} - {{message.chatClient?.name}}: {{message.message}}
+            </div>
+          </div>
+        </h6>
+      </div>
+      <div class="card-footer">
+        <form class="form-inline">
+          <div class="input-group flex-fill">
+            <div class="input-group-prepend">
+              <div class="input-group-text"></div>
+            </div>
+            <input type="text" class="form-control" [formControl]="messageFc" placeholder="Say something...">
+            <button type="button" (click)="sendMessage()" class="btn btn-primary">Send Message</button>
+          </div>
+        </form>
+        <div style="height: 10px">
+                <span *ngIf="clientsTyping.length > 0"
+                      style="color: gray; font-size: 10px;">
+  <span *ngFor="let client of clientsTyping; let  i = index">
+    {{client.name}}  is typing...
+  <span *ngIf="clientsTyping.length - 1> i">, </span>
+    </span>
+      </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div *ngIf="!chatClient">
-  <label>
-    Name:
-    <input type="text" [formControl]="nameFC">
-  </label>
-  <button (click)="sendName()">Send Name</button>
-  <label *ngIf="error$ | async as error" style="color: red">
-    {{error}}
-  </label>
-</div>
-<h2>Messages:</h2>
-<h4 *ngFor="let message of messages">
-  {{message.date | date: 'hh:mm'}} - {{message.chatClient?.name}}: {{message.message}}
-</h4>
-<h5 *ngIf="clientsTyping.length > 0" style="color: gray">
-  <span *ngFor="let client of clientsTyping">{{client.name}}, </span> is typing...
-</h5>
-<h2>Currently online:</h2>
-<div *ngIf="clients$ | async as clients">
-  <ul>
-    <li *ngFor="let client of clients">
-      {{client.name}}
-    </li>
-  </ul>
+
+<div class="row align-items-center justify-content-center vh-100" *ngIf="!chatClient">
+  <div class="card">
+    <div class="card-body">
+      <h1>Welcome to the Chat</h1>
+      <form>
+        <div class="mb-3">
+          <label for="nickNameFc" class="form-label">Enter Nickname:</label>
+          <input type="text" [formControl]="nameFC" id="nickNameFc">
+        </div>
+        <div class="row justify-content-end">
+          <button type="button" (click)="sendName()" class="btn btn-success">Send Name</button>
+        </div>
+        <label *ngIf="error$ | async as error" style="color: red">
+          {{error}}
+        </label>
+      </form>
+    </div>
+  </div>
 </div>
 

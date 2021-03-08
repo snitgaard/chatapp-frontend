@@ -69,6 +69,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   sendMessage(): void {
     console.log(this.messageFc.value);
     this.chatService.sendMessage(this.messageFc.value);
+    this.messageFc.patchValue('');
   }
 
   ngOnDestroy(): void {
