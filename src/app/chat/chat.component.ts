@@ -5,6 +5,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {debounceTime, map, take, takeUntil} from 'rxjs/operators';
 import {ChatClient} from './shared/chat-client.model';
 import {ChatMessage} from './shared/chat-message.model';
+import {LoginService} from './shared/login.service';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +21,8 @@ export class ChatComponent implements OnInit, OnDestroy {
   clients$: Observable<ChatClient[]> | undefined;
   chatClient: ChatClient | undefined;
   error$: Observable<string> | undefined;
-  constructor(private chatService: ChatService) { }
+  socketId: string | undefined;
+  constructor(private chatService: ChatService, private loginService: LoginService) { }
 
   ngOnInit(): void {
     this.messageFc.valueChanges
@@ -57,12 +59,30 @@ export class ChatComponent implements OnInit, OnDestroy {
       .subscribe(welcome => {
         this.messages = welcome.messages;
         this.chatClient = this.chatService.chatClient = welcome.client;
+        this.loginService.saveClientId(this.chatClient.id);
       })
-
-    if(this.chatService.chatClient) {
+    /*if(this.chatService.chatClient) {
       this.chatService.sendName(this.chatService.chatClient.name);
-    }
+    }*/
+    this.chatService.listenForConnect()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((id) => {
+        const clientId = this.loginService.getClientId();
+        if(clientId) {
+          this.chatService.connectClient(clientId);
+        }
+        this.socketId = id
+      });
 
+    this.chatService.listenForDisconnect()
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((id) => {
+         this.socketId = id
+      });
     this.error$ = this.chatService.listenForError().pipe(takeUntil(this.unsubscribe$));
   }
 

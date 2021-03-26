@@ -1,28 +1,20 @@
-import { Injectable } from '@angular/core';
-import {Socket} from 'ngx-socket-io';
-import {Observable} from 'rxjs';
-import {ChatClient} from './chat-client.model';
-import {ChatMessage} from './chat-message.model';
-import {WelcomeDto} from './welcome.dto';
-import {map} from 'rxjs/operators';
-import {SocketChat} from '../../app.module';
+import { Injectable } from '@angular/core';;
+import {StockValue} from './stock.model';
+import {SocketStock} from '../../app.module';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService {
-  chatClient: ChatClient | undefined;
+export class StockService {
+  stockValue: StockValue | undefined;
 
-  constructor(private socket: SocketChat) { }
+  constructor(private socket: SocketStock) { }
 
   //From frontend to backend with emit
-  sendMessage(msg: string){
-    this.socket.emit("message", msg);
+  sendStock(stock: StockValue){
+    this.socket.emit("stock", stock);
   }
-  sendTyping(typing: boolean): void {
-    this.socket.emit('typing', typing);
-  }
-
+  /*
   // Frontend is listening for backend events
   listenForMessages(): Observable<ChatMessage> {
     return this.socket
@@ -86,4 +78,5 @@ export class ChatService {
   connectClient(clientId: string): void{
     this.socket.emit('clientConnect', clientId);
   }
+   */
 }

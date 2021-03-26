@@ -1,3 +1,6 @@
+<div *ngIf="!chatClient" style="color: darkred">
+  Please connect to continue.
+</div>
 <div class="row vh-100" style="padding-top: 30px; padding-bottom: 20px" *ngIf="chatClient">
   <div class="col-4">
     <div class="card h-100">
@@ -18,7 +21,7 @@
   <div class="col-8">
     <div class="card h-100">
       <div class="card-header">
-        <h5>Welcome {{chatClient.name}}!</h5>
+        <h5>Welcome {{chatClient.name}}! Your id is: {{chatClient.id}}</h5>
       </div>
       <div class="card-body">
         <h6 *ngFor="let message of messages">
