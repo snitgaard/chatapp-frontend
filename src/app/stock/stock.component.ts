@@ -12,6 +12,7 @@ import {StockValue} from './shared/stock.model';
 })
 export class StockComponent implements OnInit, OnDestroy {
   stockFC = this.fb.group({
+    id: [''],
     stockName: [''],
     initValue: [''],
     currentValue: [''],

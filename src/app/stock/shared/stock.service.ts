@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';;
 import {StockValue} from './stock.model';
 import {SocketStock} from '../../app.module';
+import {StockDTO} from './stock.dto';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,11 @@ export class StockService {
   sendStock(stock: StockValue){
     this.socket.emit("stock", stock);
   }
+
+  listenForWelcome(): Observable<StockDTO> {
+    return this.socket
+      .fromEvent<StockDTO>("stockDTO")
+  }
   /*
   // Frontend is listening for backend events
   listenForMessages(): Observable<ChatMessage> {
@@ -24,11 +31,6 @@ export class StockService {
   listenForClients(): Observable<ChatClient[]> {
     return this.socket
       .fromEvent<ChatClient[]>("clients")
-  }
-
-  listenForWelcome(): Observable<WelcomeDto> {
-    return this.socket
-      .fromEvent<WelcomeDto>("welcome")
   }
 
   listenForClientTyping(): Observable<ChatClient> {
