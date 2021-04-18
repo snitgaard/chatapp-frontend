@@ -3,6 +3,7 @@ import {StockValue} from './stock.model';
 import {SocketStock} from '../../app.module';
 import {StockDTO} from './stock.dto';
 import {Observable} from 'rxjs';
+import {JoinStockDto} from './join-stock.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +18,21 @@ export class StockService {
     this.socket.emit("stock", stock);
   }
 
-  listenForWelcome(): Observable<StockDTO> {
-    return this.socket
-      .fromEvent<StockDTO>("stockDTO")
+  listenForWelcome(): void {
+    this.socket.emit("welcomeStock")
   }
+
+  listenForStocks(): Observable<StockValue[]>
+  {
+    return this.socket
+      .fromEvent<StockValue[]>("stocks")
+  }
+  joinStock(dto: JoinStockDto): void {
+    this.socket.emit('joinStock', dto);
+  }
+
+
+
   /*
   // Frontend is listening for backend events
   listenForMessages(): Observable<ChatMessage> {

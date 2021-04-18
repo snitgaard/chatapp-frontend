@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import {Socket} from 'ngx-socket-io';
 import {Observable} from 'rxjs';
 import {ChatClient} from './chat-client.model';
 import {ChatMessage} from './chat-message.model';
 import {WelcomeDto} from './welcome.dto';
 import {map} from 'rxjs/operators';
 import {SocketChat} from '../../app.module';
+import {SendMessageDto} from './send-message.dto';
+import {JoinChatDto} from './join-chat.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
-  chatClient: ChatClient | undefined;
 
   constructor(private socket: SocketChat) { }
 
   //From frontend to backend with emit
-  sendMessage(msg: string){
+  sendMessage(msg: SendMessageDto){
     this.socket.emit("message", msg);
   }
   sendTyping(typing: boolean): void {
@@ -54,8 +54,8 @@ export class ChatService {
       .fromEvent<ChatMessage[]>("allMessages")
   }
 
-  sendName(name: string) {
-    this.socket.emit("name", name);
+  joinChat(dto: JoinChatDto): void {
+    this.socket.emit("joinChat", dto);
   }
 
   listenForConnect(): Observable<string> {

@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
+import {ChatClient} from './chat-client.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  clientIdIdentifier = 'clientId';
   constructor() { }
-
-  saveClientId(clientId: string): void {
-    localStorage.setItem(this.clientIdIdentifier, clientId)
+  saveChatClient(chatClient: ChatClient): void {
+    localStorage.setItem('client', JSON.stringify(chatClient));
   }
-  getClientId(): string | null{
-    return localStorage.getItem(this.clientIdIdentifier)
+  loadChatClient(): ChatClient | undefined {
+    const chatClientString = localStorage.getItem('client');
+    if (chatClientString) {
+      const chatClient: ChatClient = JSON.parse(chatClientString);
+      return chatClient;
+    }
+    return undefined;
   }
-
 }
