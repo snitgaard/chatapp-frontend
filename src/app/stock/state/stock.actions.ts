@@ -8,7 +8,6 @@ export class UpdateStocks {
 
   static readonly type = '[Stock] Update Stocks';
 }
-
 export class LoadStockFromStorage {
   static readonly type = '[Stock] Load Stock From Storage';
 }

@@ -50,7 +50,7 @@
   <div class="col-5" *ngIf="selectedStock">
     <div class="card h-50">
       <div class="card-header">
-        Stocks
+        {{selectedStock.stockName}}'s details
       </div>
       <div class="card-body">
         <h4>
@@ -66,7 +66,7 @@
             <input type="number" formControlName="value">
           </label>
         </div>
-        <button type="button" (click)="updateStock()">Update</button>
+        <button type="button" class="btn btn-primary" (click)="updateStock()">Update</button>
         <div></div>
         <label style="font-size:12px">
           Initial Value: {{selectedStock.initValue}}
