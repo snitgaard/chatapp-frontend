@@ -31,7 +31,9 @@ export class StockService {
     this.socket.emit('joinStock', dto);
   }
 
-
+  updateStock(id: string, updateStock: StockValue): void {
+    this.socket.emit('updateStock', updateStock)
+  }
 
   /*
   // Frontend is listening for backend events
